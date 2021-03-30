@@ -1,21 +1,61 @@
 const express = require('express');
+const { model } = require('mongoose');
 const app = express();
 const path = require('path');
+const models = require('./models/interviewModels');
 
-// uncomment the below for proxy challenge
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-const datas = [{ name: 'test', id: '2893r7fuyseoichfniw' }];
-
-app.get('/api/datas', (req, res) => {
-  return res.status(200).send(datas);
+app.get('/api/interviews', (req, res) => {
+  models.Interview.find({})
+    .then((data) => {
+      console.log(data);
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      console.log('GET failed!');
+      res.status(400).send('GET failed!');
+    });
 });
 
-// // statically serve everything in the build folder on the route '/build'
-// app.use('/build', express.static(path.join(__dirname, '../build')));
-// // serve index.html on the route '/'
+app.post('/api/interviews', (req, res) => {
+  const newLead = req.body;
+  models.Interview.create(newLead)
+    .then((data) => {
+      console.log(data);
+      res.status(200).send('created!');
+    })
+    .catch((err) => {
+      console.log('POST failed!');
+      res.status(400).send('POST failed!');
+    });
+});
 
-app.get('/', (req, res) => {
-  return res.status(200).sendFile(path.join(__dirname, '../index.html'));
+app.put('/api/interviews/:id', (req, res) => {
+  const id = req.params.id;
+  const updatedInteview = req.body;
+  models.Interview.findByIdAndUpdate(id, updatedInteview, { new: true })
+    .then((data) => {
+      console.log('updated: ', data);
+      res.status(200).send('updated!');
+    })
+    .catch((err) => {
+      console.log('PUT failed!');
+      res.status(400).send('PUT failed!');
+    });
+});
+
+app.delete('/api/interviews/:id', (req, res) => {
+  const id = req.params.id;
+  models.Interview.findByIdAndDelete(id)
+    .then((data) => {
+      console.log('deleted: ', data);
+      res.status(200).send('deleted!');
+    })
+    .catch((err) => {
+      res.status(400).send('DELETE failed!');
+    });
 });
 
 // listen to port 3000
