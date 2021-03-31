@@ -7,10 +7,11 @@ const models = require('./models/interviewModels');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// GET
 app.get('/api/interviews', (req, res) => {
   models.Interview.find({})
     .then((data) => {
-      console.log(data);
+      //console.log(data);
       res.status(200).send(data);
     })
     .catch((err) => {
@@ -19,11 +20,13 @@ app.get('/api/interviews', (req, res) => {
     });
 });
 
+// POST
 app.post('/api/interviews', (req, res) => {
+  console.log(req.body);
   const newLead = req.body;
   models.Interview.create(newLead)
     .then((data) => {
-      console.log(data);
+      //console.log(data);
       res.status(200).send('created!');
     })
     .catch((err) => {
@@ -32,6 +35,7 @@ app.post('/api/interviews', (req, res) => {
     });
 });
 
+// PUT
 app.put('/api/interviews/:id', (req, res) => {
   const id = req.params.id;
   const updatedInteview = req.body;
@@ -46,6 +50,7 @@ app.put('/api/interviews/:id', (req, res) => {
     });
 });
 
+// DELETE
 app.delete('/api/interviews/:id', (req, res) => {
   const id = req.params.id;
   models.Interview.findByIdAndDelete(id)

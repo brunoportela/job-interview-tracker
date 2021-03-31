@@ -17,14 +17,17 @@
   "author": "Bruno Portela",
   "license": "ISC",
   "dependencies": {
+    "bootstrap": "^4.6.0",
     "browserify": "^10.2.4",
     "dotenv": "^8.2.0",
     "express": "^4.12.3",
+    "moment": "^2.29.1",
     "mongoose": "^5.12.2",
     "node-sass": "^5.0.0",
     "prop-types": "^15.6.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.3.1",
+    "react": "^17.0.2",
+    "react-bootstrap": "^1.5.2",
+    "react-dom": "^17.0.2",
     "sass-loader": "^10.1.1"
   },
   "devDependencies": {
@@ -32,6 +35,7 @@
     "@babel/preset-env": "^7.13.12",
     "@babel/preset-react": "^7.13.13",
     "babel-loader": "^8.2.2",
+    "babel-polyfill": "^6.26.0",
     "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
     "css-loader": "^5.2.0",

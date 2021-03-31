@@ -18,13 +18,28 @@ module.exports = {
             presets: ['@babel/preset-env', '@babel/preset-react']
           }
         }
+      },
+      {
+        test: /\.s[ac]ss$/i,
+        use: [
+          // Creates `style` nodes from JS strings
+          'style-loader',
+          // Translates CSS into CommonJS
+          'css-loader'
+        ]
       }
     ]
   },
   devServer: {
     publicPath: '/build',
     proxy: {
-      '/api': 'http://localhost:3000'
-    }
+      '/api': {
+        target: 'http://localhost:3000',
+        secure: false
+      }
+    },
+    port: 8080,
+    host: '0.0.0.0',
+    hot: true
   }
 };

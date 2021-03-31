@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import BoardComponent from './BoardComponent';
+import CardComponent from './CardComponent';
 var moment = require('moment');
 
 const styles = {
@@ -21,33 +21,30 @@ const appliedBoard = { gridArea: 'appliedBoard' };
 const inProgressBoard = { gridArea: 'inProgressBoard' };
 const offerBoard = { gridArea: 'offerBoard' };
 
-const useFetch = (url) => {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  // Similar to componentDidMount and componentDidUpdate:
-  useEffect(async () => {
-    const response = await fetch(url);
-    const data = await response.json();
-    setData(data);
-    setLoading(false);
-  }, []);
-
-  return { data, loading };
-};
-
-function App() {
-  const { data, loading } = useFetch('/api/interviews');
-
+function BoardComponent(props) {
   return (
     <div>
-      {loading ? (
-        <div>Loading... please wait...</div>
-      ) : (
-        <BoardComponent card={data} />
-      )}
+      <div style={styles}>
+        <div style={leadTitle}>Leads</div>
+        <div style={appliedTitle}>Applications</div>
+        <div style={inProgressTitle}>In Progress</div>
+        <div style={offerTitle}>Offers</div>
+        <div style={leadBoard}>
+          {props.card.map((card) => (
+            <CardComponent
+              company={card.company}
+              role={card.role}
+              details={card.details}
+              created_at={moment().format('MMM Do YY')}
+            />
+          ))}
+        </div>
+        <div style={appliedBoard}></div>
+        <div style={inProgressBoard}></div>
+        <div style={offerBoard}></div>
+      </div>
     </div>
   );
 }
 
-export default App;
+export default BoardComponent;

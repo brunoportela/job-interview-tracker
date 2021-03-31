@@ -18,6 +18,12 @@ mongoose
 
 const Schema = mongoose.Schema;
 
+const testSchema = new Schema({
+  name: String
+});
+
+const Test = mongoose.model('test', testSchema);
+
 const interviewSchema = new Schema({
   role: { type: String, required: true },
   company: { type: String, required: true },
