@@ -44,7 +44,7 @@ function App() {
       {loading ? (
         <div>Loading... please wait...</div>
       ) : (
-        <BoardComponent card={data} />
+        <BoardComponent cards={data} />
       )}
     </div>
   );

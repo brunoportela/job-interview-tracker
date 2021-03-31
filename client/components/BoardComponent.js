@@ -22,6 +22,22 @@ const inProgressBoard = { gridArea: 'inProgressBoard' };
 const offerBoard = { gridArea: 'offerBoard' };
 
 function BoardComponent(props) {
+  const leadCards = [];
+  const appliedCards = [];
+  const inProgressCards = [];
+  const offerCards = [];
+  props.cards.map((card) => {
+    if (card.status === 'lead') {
+      leadCards.push(card);
+    } else if (card.status === 'applied') {
+      appliedCards.push(card);
+    } else if (card.status === 'inProgress') {
+      inProgressCards.push(card);
+    } else if (card.status === 'offer') {
+      offerCards.push(card);
+    }
+  });
+
   return (
     <div>
       <div style={styles}>
@@ -30,8 +46,9 @@ function BoardComponent(props) {
         <div style={inProgressTitle}>In Progress</div>
         <div style={offerTitle}>Offers</div>
         <div style={leadBoard}>
-          {props.card.map((card) => (
+          {leadCards.map((card) => (
             <CardComponent
+              key={card._id}
               company={card.company}
               role={card.role}
               details={card.details}
@@ -39,9 +56,39 @@ function BoardComponent(props) {
             />
           ))}
         </div>
-        <div style={appliedBoard}></div>
-        <div style={inProgressBoard}></div>
-        <div style={offerBoard}></div>
+        <div style={appliedBoard}>
+          {appliedCards.map((card) => (
+            <CardComponent
+              key={card._id}
+              company={card.company}
+              role={card.role}
+              details={card.details}
+              created_at={moment().format('MMM Do YY')}
+            />
+          ))}
+        </div>
+        <div style={inProgressBoard}>
+          {inProgressCards.map((card) => (
+            <CardComponent
+              key={card._id}
+              company={card.company}
+              role={card.role}
+              details={card.details}
+              created_at={moment().format('MMM Do YY')}
+            />
+          ))}
+        </div>
+        <div style={offerBoard}>
+          {offerCards.map((card) => (
+            <CardComponent
+              key={card._id}
+              company={card.company}
+              role={card.role}
+              details={card.details}
+              created_at={moment().format('MMM Do YY')}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
