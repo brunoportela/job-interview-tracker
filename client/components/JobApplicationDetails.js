@@ -5,38 +5,52 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 
 function JobApplicationDetails(props) {
-  const [newItem, setNewItem] = useState({});
+  const [editItem, setEditItem] = useState({});
+  const [validated, setValidated] = useState(false);
 
   const onChangeHandler = (event) => {
     event.preventDefault();
     const name = event.target.name;
     const value = event.target.value;
-    newItem[name] = value;
-    setNewItem({ ...newItem, [name]: value });
-    console.log(newItem);
+    editItem[name] = value;
+    setEditItem({
+      ...editItem,
+      [name]: value
+    });
+    setEditItem({ ...editItem, [`${editItem.status}_at`]: Date.now() });
+
+    console.log(editItem);
   };
 
   function handleSubmit(e) {
-    e.preventDefault();
-    props.onHide();
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+    } else {
+      e.preventDefault();
+      props.onHide();
 
-    const data = newItem;
+      const data = editItem;
 
-    fetch(`api/interviews/${props.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data),
-      responseType: 'text'
-    })
-      .then((data) => {
-        console.log('Success:', data);
-        props.refresh();
+      fetch(`api/interviews/${props.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+        responseType: 'text'
       })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+        .then((data) => {
+          console.log('Success:', data);
+          props.refresh();
+          setValidated(false);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+    setValidated(true);
   }
 
   function handleDelete(e) {
@@ -57,13 +71,16 @@ function JobApplicationDetails(props) {
 
   return (
     <Modal
+      onExited={() => {
+        setEditItem({});
+      }}
       show={props.show}
       onHide={props.onHide}
-      size="md"
+      size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Form>
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Modal.Body style={{ padding: '25px' }}>
           <Form.Row>
             <Form.Group as={Col} controlId="companyControl">
@@ -74,7 +91,11 @@ function JobApplicationDetails(props) {
                 name="company"
                 defaultValue={props.company}
                 onChange={onChangeHandler}
+                required
               />
+              <Form.Control.Feedback type="invalid">
+                Please provide a company name.
+              </Form.Control.Feedback>
             </Form.Group>
 
             <Form.Group as={Col} controlId="locationControl">
@@ -83,7 +104,7 @@ function JobApplicationDetails(props) {
                 placeholder="Location"
                 type="text"
                 name="location"
-                // defaultValue={props.role}
+                defaultValue={props.location}
                 onChange={onChangeHandler}
               />
             </Form.Group>
@@ -96,12 +117,27 @@ function JobApplicationDetails(props) {
               name="role"
               defaultValue={props.role}
               onChange={onChangeHandler}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a job position.
+            </Form.Control.Feedback>
+          </Form.Group>
+          <Form.Group controlId="urlControl">
+            <Form.Label>Job URL</Form.Label>
+            <Form.Control
+              placeholder="Enter Job URL"
+              type="text"
+              name="url"
+              defaultValue={props.url}
+              onChange={onChangeHandler}
             />
           </Form.Group>
           <Form.Group controlId="detailsControl">
             <Form.Label>Details</Form.Label>
             <Form.Control
               as="textarea"
+              rows="10"
               placeholder="Enter any aditional information..."
               type="text"
               name="details"
@@ -122,7 +158,7 @@ function JobApplicationDetails(props) {
             >
               <option value="lead">Lead</option>
               <option value="applied">Applied</option>
-              <option value="inProgress">Interviewing</option>
+              <option value="interview">Interviewing</option>
               <option value="offer">Offer Received</option>
             </Form.Control>
           </Form.Group>
@@ -131,7 +167,7 @@ function JobApplicationDetails(props) {
           <Button variant="danger" onClick={handleDelete}>
             Delete
           </Button>
-          <Button variant="primary" onClick={handleSubmit}>
+          <Button variant="primary" type="submit">
             Save changes
           </Button>
         </Modal.Footer>

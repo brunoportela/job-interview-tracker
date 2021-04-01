@@ -6,6 +6,7 @@ import Button from 'react-bootstrap/Button';
 
 function NewApplication(props) {
   const [newItem, setNewItem] = useState({});
+  const [validated, setValidated] = useState(false);
 
   const onChangeHandler = (event) => {
     event.preventDefault();
@@ -17,75 +18,82 @@ function NewApplication(props) {
   };
 
   function handleSubmit(e) {
-    e.preventDefault();
-    props.onHide();
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+    } else {
+      e.preventDefault();
+      props.onHide();
 
-    const data = newItem;
+      const data = newItem;
 
-    fetch('api/interviews/', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data),
-      responseType: 'text'
-    })
-      .then((data) => {
-        console.log('Success:', data);
-        props.refresh();
+      fetch('api/interviews/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data),
+        responseType: 'text'
       })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
+        .then((data) => {
+          console.log('Success:', data);
+          props.refresh();
+          setValidated(false);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    }
+    setValidated(true);
   }
 
   return (
     <Modal
+      onExited={() => {
+        setNewItem({});
+      }}
       show={props.show}
       onHide={props.onHide}
-      size="md"
+      size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Form>
+      <Form noValidate validated={validated} onSubmit={handleSubmit}>
         <Modal.Body style={{ padding: '25px' }}>
-          <Form.Row>
-            <Form.Group as={Col} controlId="companyControl">
-              <Form.Label>Company Name</Form.Label>
-              <Form.Control
-                placeholder="Enter Company Name"
-                type="text"
-                name="company"
-                defaultValue={props.company}
-                onChange={onChangeHandler}
-              />
-            </Form.Group>
+          <Form.Group>
+            <Form.Label>Company Name</Form.Label>
+            <Form.Control
+              placeholder="Enter Company Name"
+              type="text"
+              name="company"
+              onChange={onChangeHandler}
+              required
+            />
+            <Form.Control.Feedback type="invalid">
+              Please provide a company name.
+            </Form.Control.Feedback>
+          </Form.Group>
 
-            <Form.Group as={Col} controlId="locationControl">
-              <Form.Label>Location</Form.Label>
-              <Form.Control
-                placeholder="Location"
-                type="text"
-                name="location"
-                // defaultValue={props.role}
-                onChange={onChangeHandler}
-              />
-            </Form.Group>
-          </Form.Row>
           <Form.Group controlId="roleControl">
             <Form.Label>Job Title</Form.Label>
             <Form.Control
               placeholder="Enter Job Title"
               type="text"
               name="role"
-              defaultValue={props.role}
               onChange={onChangeHandler}
+              required
             />
+            <Form.Control.Feedback type="invalid">
+              Please provide a job position.
+            </Form.Control.Feedback>
           </Form.Group>
+
           <Form.Group controlId="detailsControl">
             <Form.Label>Details</Form.Label>
             <Form.Control
               as="textarea"
+              rows="10"
               placeholder="Enter any aditional information..."
               type="text"
               name="details"
@@ -95,7 +103,7 @@ function NewApplication(props) {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" onClick={handleSubmit}>
+          <Button variant="primary" type="submit">
             Save
           </Button>
         </Modal.Footer>

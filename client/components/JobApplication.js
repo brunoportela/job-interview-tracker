@@ -4,6 +4,26 @@ import JobApplicationDetails from './JobApplicationDetails';
 
 function JobApplication(props) {
   const [modalShow, setModalShow] = useState(false);
+
+  function renderTimestamp(status) {
+    let time;
+    switch (status) {
+      case 'applied':
+        time = props.applied_at;
+        break;
+      case 'interview':
+        time = props.interview_at;
+        break;
+      case 'offer':
+        time = props.offer_at;
+        break;
+      default:
+        time = props.lead_at;
+        break;
+    }
+    return <small className="text-muted">{time}</small>;
+  }
+
   return (
     <div>
       <Card
@@ -19,9 +39,7 @@ function JobApplication(props) {
             {props.company}
           </Card.Subtitle>
           <Card.Title>{props.role}</Card.Title>
-          <Card.Text>
-            <small className="text-muted">{props.created_at}</small>
-          </Card.Text>
+          <Card.Text>{renderTimestamp(props.status)}</Card.Text>
         </Card.Body>
       </Card>
       <JobApplicationDetails
@@ -29,6 +47,8 @@ function JobApplication(props) {
         onHide={() => setModalShow(false)}
         id={props.id}
         company={props.company}
+        location={props.location}
+        url={props.url}
         role={props.role}
         details={props.details}
         status={props.status}

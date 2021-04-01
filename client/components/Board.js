@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import JobApplication from './JobApplication';
 import NewApplication from './NewApplication';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
 var moment = require('moment');
 
 const styles = {
@@ -12,12 +13,13 @@ const styles = {
   gridTemplateAreas: `
     'leadTitle appliedTitle inProgressTitle offerTitle'
     'leadBoard appliedBoard inProgressBoard offerBoard'
-    `
+    `,
+  margin: '30px'
 };
-const leadTitle = { gridArea: 'leadTitle' };
-const appliedTitle = { gridArea: 'appliedTitle' };
-const inProgressTitle = { gridArea: 'inProgressTitle' };
-const offerTitle = { gridArea: 'offerTitle' };
+const leadTitle = { gridArea: 'leadTitle', textAlign: 'center' };
+const appliedTitle = { gridArea: 'appliedTitle', textAlign: 'center' };
+const inProgressTitle = { gridArea: 'inProgressTitle', textAlign: 'center' };
+const offerTitle = { gridArea: 'offerTitle', textAlign: 'center' };
 const leadBoard = { gridArea: 'leadBoard' };
 const appliedBoard = { gridArea: 'appliedBoard' };
 const inProgressBoard = { gridArea: 'inProgressBoard' };
@@ -33,7 +35,7 @@ function Board(props) {
       leadCards.push(card);
     } else if (card.status === 'applied') {
       appliedCards.push(card);
-    } else if (card.status === 'inProgress') {
+    } else if (card.status === 'interview') {
       inProgressCards.push(card);
     } else if (card.status === 'offer') {
       offerCards.push(card);
@@ -43,10 +45,12 @@ function Board(props) {
   const [modalShow, setModalShow] = useState(false);
 
   return (
-    <div>
-      <Button variant="info" onClick={() => setModalShow(true)}>
-        <i class="bi bi-plus-circle-fill"></i> New Application
-      </Button>
+    <Container fluid>
+      <div style={{ textAlign: 'right' }}>
+        <Button variant="info" onClick={() => setModalShow(true)}>
+          <i className="bi bi-plus-circle-fill"></i> New Application
+        </Button>
+      </div>
       <div style={styles}>
         <div style={leadTitle}>
           <h4>Leads</h4>
@@ -66,10 +70,12 @@ function Board(props) {
               key={card._id}
               id={card._id}
               company={card.company}
+              location={card.location}
+              url={card.url}
               role={card.role}
               details={card.details}
               status={card.status}
-              created_at={moment().format('MMM Do YY')}
+              lead_at={`created on ${moment(card.lead_at).format('ll')}`}
               refresh={props.refresh}
             />
           ))}
@@ -80,10 +86,12 @@ function Board(props) {
               key={card._id}
               id={card._id}
               company={card.company}
+              location={card.location}
+              url={card.url}
               role={card.role}
               details={card.details}
               status={card.status}
-              created_at={moment().format('MMM Do YY')}
+              applied_at={`applied on ${moment(card.applied_at).format('ll')}`}
               refresh={props.refresh}
             />
           ))}
@@ -94,10 +102,14 @@ function Board(props) {
               key={card._id}
               id={card._id}
               company={card.company}
+              location={card.location}
+              url={card.url}
               role={card.role}
               details={card.details}
               status={card.status}
-              created_at={moment().format('MMM Do YY')}
+              interview_at={`interviews started on ${moment(
+                card.interview_at
+              ).format('ll')}`}
               refresh={props.refresh}
             />
           ))}
@@ -108,17 +120,25 @@ function Board(props) {
               key={card._id}
               id={card._id}
               company={card.company}
+              location={card.location}
+              url={card.url}
               role={card.role}
               details={card.details}
               status={card.status}
-              created_at={moment().format('MMM Do YY')}
+              offer_at={`offer received on ${moment(card.offer_at).format(
+                'll'
+              )}`}
               refresh={props.refresh}
             />
           ))}
         </div>
       </div>
-      <NewApplication show={modalShow} onHide={() => setModalShow(false)} />
-    </div>
+      <NewApplication
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        refresh={props.refresh}
+      />
+    </Container>
   );
 }
 

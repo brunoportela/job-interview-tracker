@@ -25,11 +25,16 @@ const testSchema = new Schema({
 const Test = mongoose.model('test', testSchema);
 
 const interviewSchema = new Schema({
-  role: { type: String, required: true },
   company: { type: String, required: true },
+  location: String,
+  url: String,
+  role: { type: String, required: true },
   details: String,
   status: { type: String, default: 'lead' },
-  created_at: { type: Date, default: Date.now }
+  lead_at: { type: Date, default: Date.now },
+  applied_at: Date,
+  interview_at: Date,
+  offer_at: Date
 });
 
 const Interview = mongoose.model('interview', interviewSchema);
