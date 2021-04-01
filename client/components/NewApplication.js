@@ -93,7 +93,7 @@ function NewApplication(props) {
             <Form.Label>Details</Form.Label>
             <Form.Control
               as="textarea"
-              rows="10"
+              rows="5"
               placeholder="Enter any aditional information..."
               type="text"
               name="details"
@@ -103,7 +103,7 @@ function NewApplication(props) {
           </Form.Group>
           <div className="float-right">
             <Button variant="primary" type="submit">
-              Save
+              <i class="bi bi-save2"> Save </i>
             </Button>
           </div>
         </Modal.Body>

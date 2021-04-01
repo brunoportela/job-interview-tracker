@@ -21,27 +21,25 @@ function JobApplication(props) {
         time = props.lead_at;
         break;
     }
-    return <small className="text-muted">{time}</small>;
+    return <small>{time}</small>;
   }
-  const color = { r: 126, g: 76, b: 40 };
 
   return (
     <div>
       <Card
-        bg={'Warning'.toLowerCase()}
+        bg={`${props.color}`.toLowerCase()}
         key={1}
-        text={'Warning'.toLowerCase() === 'light' ? 'dark' : 'white'}
+        text={`${props.color}`.toLowerCase() === 'light' ? 'dark' : 'white'}
         style={{
-          width: '20rem'
-          // background: `rgb(${props.color.r},${props.color.g},${props.color.b})`
+          width: '20rem',
+          boxShadow: '0px 0px 2px 0px',
+          borderRadius: '5px'
         }}
         className="mb-2"
         onClick={() => setModalShow(true)}
       >
         <Card.Body>
-          <Card.Subtitle className="mb-2 text-muted">
-            {props.company}
-          </Card.Subtitle>
+          <Card.Subtitle className="mb-2">{props.company}</Card.Subtitle>
           <Card.Title>{props.role}</Card.Title>
           <Card.Text>{renderTimestamp(props.status)}</Card.Text>
         </Card.Body>
@@ -55,6 +53,7 @@ function JobApplication(props) {
         url={props.url}
         role={props.role}
         details={props.details}
+        color={props.color}
         status={props.status}
         refresh={props.refresh}
       />

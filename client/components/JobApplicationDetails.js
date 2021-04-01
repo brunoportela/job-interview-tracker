@@ -3,8 +3,6 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
-import { SketchPicker } from 'react-color';
-import reactCSS from 'reactcss';
 
 function JobApplicationDetails(props) {
   const [editItem, setEditItem] = useState({});
@@ -20,8 +18,7 @@ function JobApplicationDetails(props) {
       [name]: value
     });
     setEditItem({ ...editItem, [`${editItem.status}_at`]: Date.now() });
-
-    console.log(editItem);
+    console.log(props);
   };
 
   function handleSubmit(e) {
@@ -80,40 +77,6 @@ function JobApplicationDetails(props) {
       a: '1'
     }
   });
-
-  const styles = reactCSS({
-    default: {
-      color: {
-        width: '36px',
-        height: '14px',
-        borderRadius: '2px',
-        background: `rgba(${state.color.r}, ${state.color.g}, ${state.color.b}, ${state.color.a})`
-      },
-      swatch: {
-        padding: '5px',
-        background: '#fff',
-        borderRadius: '1px',
-        boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-        display: 'inline-block',
-        cursor: 'pointer'
-      },
-      popover: {
-        position: 'absolute',
-        zIndex: '1',
-        top: '-260px'
-      }
-    }
-  });
-
-  const handleClick = () => {
-    setState({ ...state, displayColorPicker: !state.displayColorPicker });
-  };
-
-  const handleChange = (color) => {
-    setState({ color: color.rgb });
-    // update object color
-    setEditItem({ ...editItem, color: color.rgb });
-  };
 
   return (
     <Modal
@@ -183,7 +146,7 @@ function JobApplicationDetails(props) {
             <Form.Label>Details</Form.Label>
             <Form.Control
               as="textarea"
-              rows="10"
+              rows="5"
               placeholder="Enter any aditional information..."
               type="text"
               name="details"
@@ -191,53 +154,58 @@ function JobApplicationDetails(props) {
               onChange={onChangeHandler}
             />
           </Form.Group>
-
-          <Form.Group>
-            <Form.Control
-              as="select"
-              className="mr-sm-2"
-              id="inlineFormCustomSelect"
-              custom
-              name="status"
-              defaultValue={props.status}
-              onChange={onChangeHandler}
-            >
-              <option value="lead">Lead</option>
-              <option value="applied">Applied</option>
-              <option value="interview">Interviewing</option>
-              <option value="offer">Offer Received</option>
-            </Form.Control>
-          </Form.Group>
           <Form.Row>
-            <Form.Group as={Col} controlId="colorControl">
-              <div style={{ marginTop: '5px' }}>
-                <div style={styles.swatch} onClick={handleClick}>
-                  <div style={styles.color} />
-                </div>
-                {state.displayColorPicker ? (
-                  <div style={styles.popover}>
-                    <SketchPicker
-                      color={state.color}
-                      name="color"
-                      onChange={handleChange}
-                    />
-                  </div>
-                ) : null}
-              </div>
+            <Form.Group controlId="statusControl">
+              <Form.Label>Status</Form.Label>
+              <Form.Control
+                as="select"
+                className="mr-sm-2"
+                custom
+                name="status"
+                defaultValue={props.status}
+                onChange={onChangeHandler}
+              >
+                <option value="lead">Lead</option>
+                <option value="applied">Applied</option>
+                <option value="interview">Interviewing</option>
+                <option value="offer">Offer Received</option>
+              </Form.Control>
             </Form.Group>
-            <Form.Group as={Col} controlId="colorControl">
+            <Form.Group as={Col} controlId="submitControl">
+              <Form.Label>Card Color</Form.Label>
+              <Form.Control
+                as="select"
+                className="mr-sm-2"
+                custom
+                name="color"
+                defaultValue={props.color}
+                onChange={onChangeHandler}
+              >
+                <option value="Primary">Primary</option>
+                <option value="Secondary">Secondary</option>
+                <option value="Success">Success</option>
+                <option value="Danger">Danger</option>
+                <option value="Warning">Warning</option>
+                <option value="Info">Info</option>
+                <option value="Light">Light</option>
+                <option value="Dark">Dark</option>
+              </Form.Control>
+            </Form.Group>
+          </Form.Row>
+          <Form.Row>
+            <Form.Group
+              as={Col}
+              controlId="submitControl"
+              style={{ paddingLeft: 0 }}
+            >
               <div className="float-right">
                 <Button variant="primary" type="submit">
-                  Save changes
+                  <i class="bi bi-save2"> Save </i>
                 </Button>
               </div>
-              <div className="float-right">
-                <Button
-                  variant="danger"
-                  onClick={handleDelete}
-                  style={{ marginRight: '15px' }}
-                >
-                  Delete
+              <div className="float-left">
+                <Button variant="danger" onClick={handleDelete}>
+                  <i class="bi bi-trash"> Delete </i>
                 </Button>
               </div>
             </Form.Group>
@@ -249,31 +217,3 @@ function JobApplicationDetails(props) {
 }
 
 export default JobApplicationDetails;
-
-// [
-//   'Primary',
-//   'Secondary',
-//   'Success',
-//   'Danger',
-//   'Warning',
-//   'Info',
-//   'Light',
-//   'Dark',
-// ].map((variant, idx) => (
-//   <Card
-//     bg={variant.toLowerCase()}
-//     key={idx}
-//     text={variant.toLowerCase() === 'light' ? 'dark' : 'white'}
-//     style={{ width: '18rem' }}
-//     className="mb-2"
-//   >
-//     <Card.Header>Header</Card.Header>
-//     <Card.Body>
-//       <Card.Title>{variant} Card Title </Card.Title>
-//       <Card.Text>
-//         Some quick example text to build on the card title and make up the bulk
-//         of the card's content.
-//       </Card.Text>
-//     </Card.Body>
-//   </Card>
-// ));

@@ -52,7 +52,7 @@ function Board(props) {
     <Container fluid>
       <div style={{ textAlign: 'right', margin: '30px' }}>
         <Button variant="info" onClick={() => setModalShow(true)}>
-          <i className="bi bi-plus-circle-fill"></i> New Application
+          <i class="bi bi-plus-square"> New Application </i>
         </Button>
       </div>
       <div style={styles}>
