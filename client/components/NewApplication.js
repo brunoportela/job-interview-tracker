@@ -55,12 +55,12 @@ function NewApplication(props) {
       }}
       show={props.show}
       onHide={props.onHide}
-      size="lg"
+      size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
-        <Modal.Body style={{ padding: '25px' }}>
+        <Modal.Body style={{ padding: '25px 25px 0px' }}>
           <Form.Group>
             <Form.Label>Company Name</Form.Label>
             <Form.Control
@@ -101,12 +101,12 @@ function NewApplication(props) {
               onChange={onChangeHandler}
             />
           </Form.Group>
+          <div className="float-right">
+            <Button variant="primary" type="submit">
+              Save
+            </Button>
+          </div>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="primary" type="submit">
-            Save
-          </Button>
-        </Modal.Footer>
       </Form>
     </Modal>
   );

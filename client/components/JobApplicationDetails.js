@@ -3,6 +3,8 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { SketchPicker } from 'react-color';
+import reactCSS from 'reactcss';
 
 function JobApplicationDetails(props) {
   const [editItem, setEditItem] = useState({});
@@ -69,6 +71,50 @@ function JobApplicationDetails(props) {
       });
   }
 
+  const [state, setState] = useState({
+    displayColorPicker: false,
+    color: {
+      r: '241',
+      g: '112',
+      b: '19',
+      a: '1'
+    }
+  });
+
+  const styles = reactCSS({
+    default: {
+      color: {
+        width: '36px',
+        height: '14px',
+        borderRadius: '2px',
+        background: `rgba(${state.color.r}, ${state.color.g}, ${state.color.b}, ${state.color.a})`
+      },
+      swatch: {
+        padding: '5px',
+        background: '#fff',
+        borderRadius: '1px',
+        boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+        display: 'inline-block',
+        cursor: 'pointer'
+      },
+      popover: {
+        position: 'absolute',
+        zIndex: '1',
+        top: '-260px'
+      }
+    }
+  });
+
+  const handleClick = () => {
+    setState({ ...state, displayColorPicker: !state.displayColorPicker });
+  };
+
+  const handleChange = (color) => {
+    setState({ color: color.rgb });
+    // update object color
+    setEditItem({ ...editItem, color: color.rgb });
+  };
+
   return (
     <Modal
       onExited={() => {
@@ -76,12 +122,12 @@ function JobApplicationDetails(props) {
       }}
       show={props.show}
       onHide={props.onHide}
-      size="lg"
+      size="md"
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
       <Form noValidate validated={validated} onSubmit={handleSubmit}>
-        <Modal.Body style={{ padding: '25px' }}>
+        <Modal.Body style={{ padding: '25px 25px 0px' }}>
           <Form.Row>
             <Form.Group as={Col} controlId="companyControl">
               <Form.Label>Company Name</Form.Label>
@@ -162,18 +208,72 @@ function JobApplicationDetails(props) {
               <option value="offer">Offer Received</option>
             </Form.Control>
           </Form.Group>
+          <Form.Row>
+            <Form.Group as={Col} controlId="colorControl">
+              <div style={{ marginTop: '5px' }}>
+                <div style={styles.swatch} onClick={handleClick}>
+                  <div style={styles.color} />
+                </div>
+                {state.displayColorPicker ? (
+                  <div style={styles.popover}>
+                    <SketchPicker
+                      color={state.color}
+                      name="color"
+                      onChange={handleChange}
+                    />
+                  </div>
+                ) : null}
+              </div>
+            </Form.Group>
+            <Form.Group as={Col} controlId="colorControl">
+              <div className="float-right">
+                <Button variant="primary" type="submit">
+                  Save changes
+                </Button>
+              </div>
+              <div className="float-right">
+                <Button
+                  variant="danger"
+                  onClick={handleDelete}
+                  style={{ marginRight: '15px' }}
+                >
+                  Delete
+                </Button>
+              </div>
+            </Form.Group>
+          </Form.Row>
         </Modal.Body>
-        <Modal.Footer>
-          <Button variant="danger" onClick={handleDelete}>
-            Delete
-          </Button>
-          <Button variant="primary" type="submit">
-            Save changes
-          </Button>
-        </Modal.Footer>
       </Form>
     </Modal>
   );
 }
 
 export default JobApplicationDetails;
+
+// [
+//   'Primary',
+//   'Secondary',
+//   'Success',
+//   'Danger',
+//   'Warning',
+//   'Info',
+//   'Light',
+//   'Dark',
+// ].map((variant, idx) => (
+//   <Card
+//     bg={variant.toLowerCase()}
+//     key={idx}
+//     text={variant.toLowerCase() === 'light' ? 'dark' : 'white'}
+//     style={{ width: '18rem' }}
+//     className="mb-2"
+//   >
+//     <Card.Header>Header</Card.Header>
+//     <Card.Body>
+//       <Card.Title>{variant} Card Title </Card.Title>
+//       <Card.Text>
+//         Some quick example text to build on the card title and make up the bulk
+//         of the card's content.
+//       </Card.Text>
+//     </Card.Body>
+//   </Card>
+// ));

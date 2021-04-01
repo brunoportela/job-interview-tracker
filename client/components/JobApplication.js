@@ -23,14 +23,18 @@ function JobApplication(props) {
     }
     return <small className="text-muted">{time}</small>;
   }
+  const color = { r: 126, g: 76, b: 40 };
 
   return (
     <div>
       <Card
-        bg={'Light'.toLowerCase()}
+        bg={'Warning'.toLowerCase()}
         key={1}
-        text={'Light'.toLowerCase() === 'light' ? 'dark' : 'white'}
-        style={{ width: '18rem' }}
+        text={'Warning'.toLowerCase() === 'light' ? 'dark' : 'white'}
+        style={{
+          width: '20rem'
+          // background: `rgb(${props.color.r},${props.color.g},${props.color.b})`
+        }}
         className="mb-2"
         onClick={() => setModalShow(true)}
       >

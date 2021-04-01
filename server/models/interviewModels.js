@@ -31,6 +31,11 @@ const interviewSchema = new Schema({
   role: { type: String, required: true },
   details: String,
   status: { type: String, default: 'lead' },
+  color: {
+    r: { type: Number, default: 108 },
+    g: { type: Number, default: 117 },
+    b: { type: Number, default: 125 }
+  },
   lead_at: { type: Date, default: Date.now },
   applied_at: Date,
   interview_at: Date,

@@ -14,7 +14,11 @@ const styles = {
     'leadTitle appliedTitle inProgressTitle offerTitle'
     'leadBoard appliedBoard inProgressBoard offerBoard'
     `,
-  margin: '30px'
+  margin: '30px',
+  justifyItems: 'center',
+  boxShadow: '0px 0px 5px 0px',
+  padding: '25px 0',
+  background: 'rgba(242, 243, 244, 0.5)'
 };
 const leadTitle = { gridArea: 'leadTitle', textAlign: 'center' };
 const appliedTitle = { gridArea: 'appliedTitle', textAlign: 'center' };
@@ -46,7 +50,7 @@ function Board(props) {
 
   return (
     <Container fluid>
-      <div style={{ textAlign: 'right' }}>
+      <div style={{ textAlign: 'right', margin: '30px' }}>
         <Button variant="info" onClick={() => setModalShow(true)}>
           <i className="bi bi-plus-circle-fill"></i> New Application
         </Button>
@@ -74,6 +78,7 @@ function Board(props) {
               url={card.url}
               role={card.role}
               details={card.details}
+              color={card.color}
               status={card.status}
               lead_at={`created on ${moment(card.lead_at).format('ll')}`}
               refresh={props.refresh}
@@ -90,6 +95,7 @@ function Board(props) {
               url={card.url}
               role={card.role}
               details={card.details}
+              color={card.color}
               status={card.status}
               applied_at={`applied on ${moment(card.applied_at).format('ll')}`}
               refresh={props.refresh}
@@ -106,6 +112,7 @@ function Board(props) {
               url={card.url}
               role={card.role}
               details={card.details}
+              color={card.color}
               status={card.status}
               interview_at={`interviews started on ${moment(
                 card.interview_at
@@ -124,6 +131,7 @@ function Board(props) {
               url={card.url}
               role={card.role}
               details={card.details}
+              color={card.color}
               status={card.status}
               offer_at={`offer received on ${moment(card.offer_at).format(
                 'll'
