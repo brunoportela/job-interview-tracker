@@ -11,11 +11,9 @@ app.use(express.urlencoded({ extended: true }));
 app.get('/api/interviews', (req, res) => {
   models.Interview.find({})
     .then((data) => {
-      //console.log(data);
       res.status(200).send(data);
     })
     .catch((err) => {
-      console.log('GET failed!');
       res.status(400).send('GET failed!');
     });
 });
@@ -26,11 +24,9 @@ app.post('/api/interviews', (req, res) => {
   const newLead = req.body;
   models.Interview.create(newLead)
     .then((data) => {
-      //console.log(data);
       res.status(200).send('created!');
     })
     .catch((err) => {
-      console.log('POST failed!');
       res.status(400).send('POST failed!');
     });
 });

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import CardComponent from './CardComponent';
+import JobApplication from './JobApplication';
+import NewApplication from './NewApplication';
+import Button from 'react-bootstrap/Button';
 var moment = require('moment');
 
 const styles = {
   display: 'grid',
   gridTemplateColumns: '1fr 1fr 1fr 1fr',
-  gridTemplateRows: '10% 1fr',
+  gridTemplateRows: '5% 1fr',
   gap: '30px 10px',
   gridTemplateAreas: `
     'leadTitle appliedTitle inProgressTitle offerTitle'
@@ -21,7 +23,7 @@ const appliedBoard = { gridArea: 'appliedBoard' };
 const inProgressBoard = { gridArea: 'inProgressBoard' };
 const offerBoard = { gridArea: 'offerBoard' };
 
-function BoardComponent(props) {
+function Board(props) {
   const leadCards = [];
   const appliedCards = [];
   const inProgressCards = [];
@@ -38,60 +40,86 @@ function BoardComponent(props) {
     }
   });
 
+  const [modalShow, setModalShow] = useState(false);
+
   return (
     <div>
+      <Button variant="info" onClick={() => setModalShow(true)}>
+        <i class="bi bi-plus-circle-fill"></i> New Application
+      </Button>
       <div style={styles}>
-        <div style={leadTitle}>Leads</div>
-        <div style={appliedTitle}>Applications</div>
-        <div style={inProgressTitle}>In Progress</div>
-        <div style={offerTitle}>Offers</div>
+        <div style={leadTitle}>
+          <h4>Leads</h4>
+        </div>
+        <div style={appliedTitle}>
+          <h4>Applications</h4>
+        </div>
+        <div style={inProgressTitle}>
+          <h4>Interviewing</h4>
+        </div>
+        <div style={offerTitle}>
+          <h4>Offers</h4>
+        </div>
         <div style={leadBoard}>
           {leadCards.map((card) => (
-            <CardComponent
+            <JobApplication
               key={card._id}
+              id={card._id}
               company={card.company}
               role={card.role}
               details={card.details}
+              status={card.status}
               created_at={moment().format('MMM Do YY')}
+              refresh={props.refresh}
             />
           ))}
         </div>
         <div style={appliedBoard}>
           {appliedCards.map((card) => (
-            <CardComponent
+            <JobApplication
               key={card._id}
+              id={card._id}
               company={card.company}
               role={card.role}
               details={card.details}
+              status={card.status}
               created_at={moment().format('MMM Do YY')}
+              refresh={props.refresh}
             />
           ))}
         </div>
         <div style={inProgressBoard}>
           {inProgressCards.map((card) => (
-            <CardComponent
+            <JobApplication
               key={card._id}
+              id={card._id}
               company={card.company}
               role={card.role}
               details={card.details}
+              status={card.status}
               created_at={moment().format('MMM Do YY')}
+              refresh={props.refresh}
             />
           ))}
         </div>
         <div style={offerBoard}>
           {offerCards.map((card) => (
-            <CardComponent
+            <JobApplication
               key={card._id}
+              id={card._id}
               company={card.company}
               role={card.role}
               details={card.details}
+              status={card.status}
               created_at={moment().format('MMM Do YY')}
+              refresh={props.refresh}
             />
           ))}
         </div>
       </div>
+      <NewApplication show={modalShow} onHide={() => setModalShow(false)} />
     </div>
   );
 }
 
-export default BoardComponent;
+export default Board;
