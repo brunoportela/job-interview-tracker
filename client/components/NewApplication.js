@@ -14,7 +14,6 @@ function NewApplication(props) {
     const value = event.target.value;
     newItem[name] = value;
     setNewItem({ ...newItem, [name]: value });
-    console.log(newItem);
   };
 
   function handleSubmit(e) {

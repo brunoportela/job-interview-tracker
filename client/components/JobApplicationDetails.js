@@ -18,7 +18,6 @@ function JobApplicationDetails(props) {
       [name]: value
     });
     setEditItem({ ...editItem, [`${editItem.status}_at`]: Date.now() });
-    console.log(props);
   };
 
   function handleSubmit(e) {
