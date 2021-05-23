@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server/server.js",
     "build": "NODE_ENV=production webpack",
+    "heroku-postbuild": "webpack -p",
     "dev": "NODE_ENV=development webpack-dev-server & npm start"
   },
   "nodemonConfig": {
