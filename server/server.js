@@ -7,6 +7,10 @@ const models = require('./models/interviewModels');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.get("/", (req, res) => {
+  res.status(200).sendFile(path.join(__dirname, "../index.html"));
+});
+
 // GET
 app.get('/api/interviews', (req, res) => {
   models.Interview.find({})
